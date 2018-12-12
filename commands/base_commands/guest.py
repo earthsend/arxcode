@@ -36,7 +36,7 @@ _vocations_ = ("noble", "courtier", "charlatan", "soldier", "knight", "priest", 
                "apothecary", "carpenter")
 _stage3_fields_ = ("concept", "gender", "age", "fealty", "family", "religion", "desc", "personality", "background",
                    "marital_status", "quote", "birthday", "social_rank", "skintone", "eyecolor", "haircolor", "height")
-_valid_fealty_ = ("Crownsworn", "Grayson", "Redrain", "Thrax", "Valardin", "Velenosa")
+_valid_fealty_ = ("Camlach", "Siovale", "Namarre", "Kusheth", "L'Agnace", "Eisande", "Azzalle")
 _stage3_optional_ = ("real_concept", "real_age")
 # Minimum and maximum ages players can set for starting characters
 _min_age_ = 18
@@ -128,7 +128,7 @@ def get_bonus_skill_points():
 
 
 STAT_POINTS = 12
-SKILL_POINTS = 20
+SKILL_POINTS = 50
 CONCEPT_MAX_LEN = 30
 DESC_MIN_LEN = 300
 DESC_MAX_LEN = 1400
@@ -148,7 +148,7 @@ XP_BONUS_BY_POP = 1
 
 def census_of_fealty():
     """Returns dict of fealty name to number of active players"""
-    fealties = {"Valardin": 0, "Velenosa": 0, "Grayson": 0, "Crownsworn": 0, "Thrax": 0, "Redrain": 0}
+    fealties = {"Camlach": 0, "Eisande": 0, "Namarre": 0, "Kusheth": 0, "Azzalle": 0, "Siovale": 0, "L'Agnace": 0}
     from typeclasses.characters import Character
     for char in Character.objects.filter(roster__roster__name="Active"):
         fealty = (char.db.fealty or "").capitalize()
@@ -192,12 +192,9 @@ def award_bonus_by_age(age):
 
 STAGE0 = \
        """
-Welcome to {cArx{n, a text based fantasy roleplaying game, similar in design
-to many other MUSH based games. Arx is a game of intrigue and adventure,
-politics and deeply woven stories, allowing players to enter the ongoing
-stories with either a character from a roster of pre-generated characters
-that have been a part of the story so far, or to create your own with help
-and guidance to best fit into the stories we are creating here.
+Welcome to {cFinisterre{n, a text based fantasy roleplaying game.
+Finisterre is loosely based in Jacqueline Carey's Kushiel books,
+with a focus on intrigue, the grim realities of warfare and survival. 
 
 If you'd like to read about the current stories, or background lore and
 completed roleplay, please access our help files with '{whelp{n' to browse
@@ -612,8 +609,8 @@ a series of prompts asking you to enter values, for which you will use
 the 'add' command. The '{w@add{n' command is executed by adding a '/' after
 it with the name of the field you wish to modify, followed by an argument.
 For example, to set your character's {cname{n, you might enter
-        {w@add/name Alarice{n
-for a character named Alarice.
+        {w@add/name Imriel{n
+for a character named Imriel.
         """
             player.msg(intro)
             player.execute_cmd("look")
@@ -629,7 +626,7 @@ class CmdGuestAddInput(ArxPlayerCommand):
     Fills in a field at a given prompt with all input following '@add'.
     Old fields can be filled out with various switches. For example, to
     add your email address, you might enter:
-        @add/email leona.manly@teemocorps.net
+        @add/email melisande.shahrizai@plotting.fr
     """
 
     key = "@add"
@@ -722,13 +719,13 @@ class CmdGuestAddInput(ArxPlayerCommand):
             caller.msg("{w@add/<field>{n must have a value after a space. Examples:\n" +
                        "{w@add/gender{n, ex: {w@add/gender female{n\n" +
                        "{w@add/age{n, ex: {w@add/age 25{n\n" +
-                       "{w@add/fealty{n, ex: {w@add/fealty Velenosa{n\n" +
-                       "{w@add/family{n, ex: {w@add/family Whisper{n\n" +
-                       "{w@add/religion{n, ex: {w@add/religion Pantheon{n\n" +
-                       "{w@add/desc{n, ex: {w@add/desc A severe girl with blue eyes...{n\n" +
-                       "{w@add/concept{n, ex: {w@add/concept Humorless Handmaiden{n\n" +
-                       "{w@add/background{n, ex: {w@add/background She was of humble birth..." +
-                       "{w@add/social_rank{n, ex: {w@add/social_rank 8")
+                       "{w@add/fealty{n, ex: {w@add/fealty Kushiel{n\n" +
+                       "{w@add/family{n, ex: {w@add/family Shahrizai{n\n" +
+                       "{w@add/religion{n, ex: {w@add/religion Faith of the Companions{n\n" +
+                       "{w@add/desc{n, ex: {w@add/desc A severe lady with blue eyes...{n\n" +
+                       "{w@add/concept{n, ex: {w@add/concept Humorless Plotter{n\n" +
+                       "{w@add/background{n, ex: {w@add/background She was of noble birth..." +
+                       "{w@add/social_rank{n, ex: {w@add/social_rank 4")
             return
         # if switches is a list, convert it to a string
         if not isinstance(switches, string_types):
